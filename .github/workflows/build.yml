@@ -1,0 +1,26 @@
+name: Build All 3 Windows Apps
+on: [workflow_dispatch]
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+      - name: Install Nativefier
+        run: npm install -g nativefier
+      - name: Build App 1 (التسجيل)
+        run: nativefier --name "Registration" --platform windows --arch x64 --electron-version 22.3.27 "https://tadjel3ilm.github.io/school-register/"
+      - name: Build App 2 (السجل)
+        run: nativefier --name "Archive" --platform windows --arch x64 --electron-version 22.3.27 "https://tadjel3ilm.github.io/school-eleves/"
+      - name: Build App 3 (الخزينة)
+        run: nativefier --name "Treasury" --platform windows --arch x64 --electron-version 22.3.27 "https://tadjel3ilm.github.io/school-payments/"
+      - name: Upload All Apps
+        uses: actions/upload-artifact@v4
+        with:
+          name: School-Desktop-Apps
+          path: |
+            Registration-win32-x64/
+            Archive-win32-x64/
+            Treasury-win32-x64/
